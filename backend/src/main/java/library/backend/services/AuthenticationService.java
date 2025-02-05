@@ -39,7 +39,7 @@ public class AuthenticationService {
 
         String token = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token, user.getId());
+        return new AuthenticationResponse(token, user.getId(), user.getRole());
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
@@ -59,7 +59,7 @@ public class AuthenticationService {
 
         String jwtToken = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(jwtToken, user.getId());
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getRole());
     }
 }
 

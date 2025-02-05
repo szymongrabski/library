@@ -18,5 +18,4 @@ public class RegisterRequest {
     private String lastName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
-    private String bio;
 }
