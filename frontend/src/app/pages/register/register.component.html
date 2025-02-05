@@ -1,0 +1,62 @@
+<app-nav-bar/>
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+    <div>
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" />
+      <small *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']">
+        Email is required.
+      </small>
+      <small *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']">
+        Please enter a valid email.
+      </small>
+    </div>
+  
+    <div>
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" />
+      <small *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']">
+        Password is required.
+      </small>
+      <small *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']">
+        Password must be at least 6 characters long.
+      </small>
+    </div>
+  
+    <div>
+      <label for="firstName">First Name</label>
+      <input id="firstName" formControlName="firstName" type="text" />
+      <small *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors?.['required']">
+        First Name is required.
+      </small>
+    </div>
+  
+    <div>
+      <label for="lastName">Last Name</label>
+      <input id="lastName" formControlName="lastName" type="text" />
+      <small *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors?.['required']">
+        Last Name is required.
+      </small>
+    </div>
+  
+    <div>
+      <label for="dateOfBirth">Date of Birth</label>
+      <input id="dateOfBirth" formControlName="dateOfBirth" type="date" />
+      <small *ngIf="registerForm.get('dateOfBirth')?.touched && registerForm.get('dateOfBirth')?.errors?.['required']">
+        Date of Birth is required.
+      </small>
+    </div>
+  
+    <div>
+      <label for="phoneNumber">Phone Number</label>
+      <input id="phoneNumber" formControlName="phoneNumber" type="text" />
+      <small *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors?.['required']">
+        Phone Number is required.
+      </small>
+      <small *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors?.['pattern']">
+        Please enter a valid phone number (9 digits).
+      </small>
+    </div>
+  
+    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+</form>
+  

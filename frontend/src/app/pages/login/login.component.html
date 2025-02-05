@@ -1,0 +1,23 @@
+<app-nav-bar/>
+<div class="login-container">
+    <h2>Logowanie</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div>
+        <label>Email</label>
+        <input type="email" formControlName="email" />
+        <p *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Invalid email.
+        </p>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" formControlName="password" />
+        <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Password must be at least 6 characters long.
+        </p>
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid">Log in</button>
+    </form>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>
+  

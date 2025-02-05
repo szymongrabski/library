@@ -1,0 +1,22 @@
+<nav class="navbar">
+    <ul>
+      <li *ngIf="!isLoggedIn">
+        <a routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="!isLoggedIn">
+        <a routerLink="/register">Register</a>
+      </li>
+
+      <li *ngIf="isLoggedIn">
+        <a routerLink="/user-panel">User</a>
+      </li>
+      <li *ngIf="isLoggedIn && isAdmin">
+        <a routerLink="/admin-panel">Admin Panel</a>
+      </li>
+  
+      <li *ngIf="isLoggedIn">
+        <button (click)="logout()">Logout</button>
+      </li>
+    </ul>
+  </nav>
+  
