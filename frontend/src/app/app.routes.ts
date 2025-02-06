@@ -6,6 +6,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { canActivateAdminGuard } from './guards/can-activate-admin.guard';
 import { UserPanelComponent } from './pages/user-panel/user-panel.component';
 import { canActivateUserGuard } from './guards/can-activate-user.guard';
+import { BookDetailsComponent } from './pages/book-details/book-details.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent},
@@ -17,6 +18,11 @@ export const routes: Routes = [
     { 
         path: 'admin-panel',
         component: AdminPanelComponent,
+        canActivate: [canActivateAdminGuard]
+    },
+    {
+        path: 'books/:id',
+        component: BookDetailsComponent,
         canActivate: [canActivateAdminGuard]
     },
     {

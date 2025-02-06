@@ -1,11 +1,12 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, computed} from '@angular/core';
 import { BookService } from '../../services/book.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-book-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './book-table.component.html',
   styleUrls: ['./book-table.component.scss']
 })

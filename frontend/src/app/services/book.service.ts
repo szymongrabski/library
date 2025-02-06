@@ -83,4 +83,15 @@ export class BookService {
       this.page.update(p => p - 1);
     }
   }
+
+  deleteBook(bookId: number): void {
+    this.http.delete(`${this.apiUrl}/books/${bookId}`).subscribe({
+      next: () => {
+        this.loadAllBooks();
+      },
+      error: (err) => {
+        console.error('Err while deleting book: ', err);
+      }
+    });
+  }
 }

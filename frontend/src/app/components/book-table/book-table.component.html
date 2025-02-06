@@ -37,6 +37,9 @@
                     }
                 </button>
             </th>
+            <th>
+                Details
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +51,9 @@
               <td>{{ book.authors.join(', ') }}</td>
               <td>{{ book.publisherName }}</td>
               <td>{{ book.quantity }}</td>
+              <td>
+                <a [routerLink]="['/books', book.id]">See more</a>
+              </td>
             </tr>
           }
         </tbody>
