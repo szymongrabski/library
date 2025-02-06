@@ -1,22 +1,26 @@
 <nav class="navbar">
-    <ul>
-      <li *ngIf="!isLoggedIn">
+  <ul>
+    @if (!isLoggedIn) {
+      <li>
         <a routerLink="/login">Login</a>
       </li>
-      <li *ngIf="!isLoggedIn">
+      <li>
         <a routerLink="/register">Register</a>
       </li>
+    }
 
-      <li *ngIf="isLoggedIn">
+    @if (isLoggedIn) {
+      <li>
         <a routerLink="/user-panel">User</a>
       </li>
-      <li *ngIf="isLoggedIn && isAdmin">
-        <a routerLink="/admin-panel">Admin Panel</a>
-      </li>
-  
-      <li *ngIf="isLoggedIn">
+      @if (isAdmin) {
+        <li>
+          <a routerLink="/admin-panel">Admin Panel</a>
+        </li>
+      }
+      <li>
         <button (click)="logout()">Logout</button>
       </li>
-    </ul>
-  </nav>
-  
+    }
+  </ul>
+</nav>
