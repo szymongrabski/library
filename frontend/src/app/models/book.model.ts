@@ -5,5 +5,7 @@ export interface Book {
     readonly quantity: number;
     readonly description: string;
     readonly publisherName: string;
-    readonly authors: string[];
+    readonly imageUrl: string;
+    readonly authors: number[];
+    readonly publishedDate: string;
 }

@@ -1,0 +1,103 @@
+<div>
+    <h2>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h2>
+  
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+      
+      <div>
+        <label for="isbn">ISBN</label>
+        <input id="isbn" formControlName="isbn" type="text"/>
+        @if (bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched) {
+          <div>
+            ISBN is required.
+          </div>
+        }
+      </div>
+  
+      <div>
+        <label for="title">Title</label>
+        <input id="title" formControlName="title" type="text"/>
+        @if (bookForm.get('title')?.invalid && bookForm.get('title')?.touched) {
+          <div>
+            Title is required.
+          </div>
+        }
+      </div>
+  
+      <div>
+        <label for="quantity">Quantity</label>
+        <input id="quantity" formControlName="quantity" type="number"/>
+        @if (bookForm.get('quantity')?.invalid && bookForm.get('quantity')?.touched) {
+          <div>
+            Quantity is required and must be at least 1.
+          </div>
+        }
+      </div>
+  
+      <div>
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description"></textarea>
+      </div>
+  
+      <div>
+        <label for="publisher">Publisher</label>
+        <select id="publisher" formControlName="publisher">
+          @for (publisher of publishers; track publisher.id) {
+            <option [value]="publisher.name">{{ publisher.name }}</option>
+          }
+        </select>
+        @if (bookForm.get('publisher')?.invalid && bookForm.get('publisher')?.touched) {
+          <div>
+            Publisher is required.
+          </div>
+        }
+      </div>
+
+      <div>
+        <label for="imageUrl">Book Image URL</label>
+        <input type="text" id="imageUrl" formControlName="imageUrl" />
+        @if (bookForm.get('imageUrl')?.invalid && bookForm.get('imageUrl')?.touched) {
+            <div>
+                Please provide a valid image URL.
+            </div>
+        }
+      </div>
+
+      <div>
+        <label for="publishedDate">Published Date</label>
+        <input id="publishedDate" type="date" formControlName="publishedDate"/>
+        @if (bookForm.get('publishedDate')?.invalid && bookForm.get('publishedDate')?.touched) {
+            <div>
+                Published Date is required.
+            </div>
+        } @else if (bookForm.get('publishedDate')?.hasError('pastDate')) {
+            <div>
+                The published date must be in the past.
+            </div>
+        }
+      </div>
+  
+      <div>
+        <label for="authors">Available Authors</label>
+        <select id="authors" (change)="onAuthorSelect($event)">
+          @for (author of authors; track author.id) {
+            <option [value]="author.id">{{ author.name }} {{ author.surname }}</option>
+          }
+        </select>
+      </div>
+  
+      <div>
+        <span>Selected Authors</span>
+        <ul>
+          @for (author of selectedAuthors; track author.id) {
+            <li [id]="author.id">
+              {{ author.name }} {{ author.surname }}
+              <button type="button" (click)="removeAuthor(author.id)">Remove</button>
+            </li>
+          }
+        </ul>
+      </div>
+      <button (click)="resetForm()">Clear</button>
+      <button type="submit" [disabled]="bookForm.invalid">Submit</button>
+    </form>
+  </div>
+  

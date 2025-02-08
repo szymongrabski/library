@@ -1,0 +1,36 @@
+@if (book) {
+    <div class="book-details-container">
+        <h2>{{ book.title }}</h2>
+        <div>
+          <strong>ISBN:</strong> {{ book.isbn }}
+        </div>
+        <div>
+          <strong>Publisher:</strong> {{ book.publisherName }}
+        </div>
+        <div>
+          <strong>Quantity:</strong> {{ book.quantity }}
+        </div>
+        <div>
+          <strong>Description:</strong> {{ book.description }}
+        </div>
+        <div>
+          <strong>Authors:</strong>
+          <ul>
+            @for (author of authors; track author.id) {
+                <li [id]="author.id">
+                    {{ author.name }} {{ author.surname }}
+                </li>
+            }
+          </ul>
+        </div>
+
+        <div>
+            <img [src]="book.imageUrl" alt="{{ book.title }}" class="book-image" />
+        </div>
+    </div>
+      
+} @else {
+    <div>
+        Loading book details...
+    </div>
+}

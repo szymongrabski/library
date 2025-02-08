@@ -1,3 +1,7 @@
 <app-nav-bar/>
 <button (click)="handleDelete()">Delete</button>
-<p>book-details works!</p>
+<button (click)="toggleShowEditForm()">{{ showEditForm ? "Hide" : "Edit"}}</button>
+@if (showEditForm) {
+    <app-book-form/>
+}
+<app-book [bookId]="bookId"/>

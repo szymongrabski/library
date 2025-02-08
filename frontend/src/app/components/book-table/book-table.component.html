@@ -38,6 +38,16 @@
                 </button>
             </th>
             <th>
+              Published Date
+              <button (click)="sortByPublishedDate()">
+                @if (dateSortDirection === "asc") {
+                    ASC
+                } @else {
+                    DESC                        
+                }
+            </button>
+            </th>
+            <th>
                 Details
             </th>
           </tr>
@@ -51,6 +61,7 @@
               <td>{{ book.authors.join(', ') }}</td>
               <td>{{ book.publisherName }}</td>
               <td>{{ book.quantity }}</td>
+              <td>{{ book.publishedDate | date:'d MMMM yyyy' }}</td>
               <td>
                 <a [routerLink]="['/books', book.id]">See more</a>
               </td>

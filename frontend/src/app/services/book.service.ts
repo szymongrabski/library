@@ -2,12 +2,13 @@ import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environgment';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../models/book.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/books`;
   private allBooks = signal<Book[]>([]); 
   private page = signal<number>(0);
   private size = signal<number>(10);
@@ -17,7 +18,7 @@ export class BookService {
   }
 
   loadAllBooks(): void {
-    this.http.get<Book[]>(`${this.apiUrl}/books/all`).subscribe(data => {
+    this.http.get<Book[]>(`${this.apiUrl}/all`).subscribe(data => {
       this.allBooks.set(data);
     });
   }
@@ -59,6 +60,20 @@ export class BookService {
     this.allBooks.set(sortedBooks);
   }
 
+  sortByPublishedDate(direction: "asc" | "desc"): void {
+    const sortedBooks = [...this.allBooks()];
+    sortedBooks.sort((a, b) => {
+      const dateA = new Date(a.publishedDate);
+      const dateB = new Date(b.publishedDate);
+      if (direction === "asc") {
+        return dateA.getTime() - dateB.getTime();
+      } else {
+        return dateB.getTime() - dateA.getTime();
+      }
+    });
+    this.allBooks.set(sortedBooks);
+  }
+
   paginatedBooks(): Book[] {
     const start = this.page() * this.size();
     return this.allBooks().slice(start, start + this.size());
@@ -85,7 +100,7 @@ export class BookService {
   }
 
   deleteBook(bookId: number): void {
-    this.http.delete(`${this.apiUrl}/books/${bookId}`).subscribe({
+    this.http.delete(`${this.apiUrl}/${bookId}`).subscribe({
       next: () => {
         this.loadAllBooks();
       },
@@ -93,5 +108,21 @@ export class BookService {
         console.error('Err while deleting book: ', err);
       }
     });
+  }
+
+  getBookById(bookId: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${bookId}`);
+  }
+
+  createBook(book: Book): Observable<Book> {
+    return this.http.post<Book>(this.apiUrl, book);
+  }
+
+  updateBook(bookId: number, book: Book): Observable<Book> {
+    return this.http.put<Book>(`${this.apiUrl}/${bookId}`, book);
+  }
+  
+  getBooks() {
+    return this.allBooks();
   }
 }

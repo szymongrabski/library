@@ -1,2 +1,6 @@
 <app-nav-bar/>
+<button (click)="toggleShowAddBookForm()">{{showAddBookForm ? "Hide": "Add book" }}</button>
+@if (showAddBookForm) {
+    <app-book-form/>
+}
 <app-book-table/>
