@@ -1,2 +1,5 @@
 <app-nav-bar/>
-<p>user-panel works!</p>
+<button class="btn btn-primary m-3" (click)="toggleShowEditUserForm()">{{showEditUserForm ? "Hide" : "Edit"}}</button>
+@if(showEditUserForm) {
+    <app-user-form/>
+}

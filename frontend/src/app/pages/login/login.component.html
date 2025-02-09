@@ -1,24 +1,26 @@
 <app-nav-bar/>
-<div class="login-container">
-  <h2>Logowanie</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-      <label>Email</label>
-      <input type="email" formControlName="email" />
+<div class="d-flex flex-column align-items-center m-3">
+  <h2>Log in</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="needs-validation card w-50 p-3 mb-2">
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" formControlName="email" class="form-control" />
       @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-        <p>Invalid email.</p>
+        <p class="text-danger mt-1">Invalid email.</p>
       }
     </div>
-    <div>
-      <label>Password</label>
-      <input type="password" formControlName="password" />
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" formControlName="password" class="form-control" />
       @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-        <p>Password must be at least 6 characters long.</p>
+        <p class="text-danger mt-1">Password must be at least 6 characters long.</p>
       }
     </div>
-    <button type="submit" [disabled]="loginForm.invalid">Log in</button>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Log in</button>
+    </div>
   </form>
   @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
+    <p class="text-danger text-center mt-3">{{ errorMessage }}</p>
   }
 </div>

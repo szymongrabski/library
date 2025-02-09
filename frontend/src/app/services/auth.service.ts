@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environgment'
+import { User } from '../models/user.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,42 +16,27 @@ export class AuthService {
     return this.http.post<any>(this.apiUrl + '/auth/login', { email, password }).pipe(
       tap(response => {
         if (response.token) {
-          this.storeUserData(response.token, response.userId, response.userRole);
+          this.storeUserData(response.token, response.userId, response.userRole, response.firstName);
         }
       })
     );
   }
   
-  register(
-    email: string, 
-    password: string, 
-    firstName: string, 
-    lastName: string, 
-    dateOfBirth: string, 
-    phoneNumber: string
-  ): Observable<any> {
-    const registerData = {
-      email,
-      password,
-      firstName,
-      lastName,
-      dateOfBirth,
-      phoneNumber,
-    };
-
-    return this.http.post<any>(this.apiUrl + '/auth/register', registerData).pipe(
+  register(user: User): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/auth/register', user).pipe(
       tap(response => {
         if (response.token) {
-          this.storeUserData(response.token, response.userId, response.userRole);
+          this.storeUserData(response.token, response.userId, response.userRole, response.firstName);
         }
       })
     );
   }
 
-  private storeUserData(token: string, userId: number, userRole: string) {
+  private storeUserData(token: string, userId: number, userRole: string, firstName: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId.toString());
     localStorage.setItem('userRole', userRole);
+    localStorage.setItem('firstName', firstName);
   }
 
   isAuthenticated(): boolean {
@@ -61,9 +47,20 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  getUserId(): string | null {
+    return localStorage.getItem('userId');
+  }
+
+
   getUserRole(): string | null {
     return localStorage.getItem('userRole');
   }
+
+
+  getFirstName(): string | null {
+    return localStorage.getItem('firstName');
+  }
+
 
   logout() {
     localStorage.removeItem('token');

@@ -1,6 +1,8 @@
 <app-nav-bar/>
-<button (click)="handleDelete()">Delete</button>
-<button (click)="toggleShowEditForm()">{{ showEditForm ? "Hide" : "Edit"}}</button>
+<div class="d-flex gap-2 p-3">
+    <button (click)="handleDelete()" class="btn btn-danger">Delete</button>
+    <button (click)="toggleShowEditForm()" class="btn btn-primary">{{ showEditForm ? "Hide" : "Edit"}}</button>
+</div>
 @if (showEditForm) {
     <app-book-form/>
 }

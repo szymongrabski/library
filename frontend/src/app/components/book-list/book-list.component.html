@@ -1,0 +1,15 @@
+<div class="container mt-4">  
+    <ul class="list-group list-unstyled">
+      @for (book of paginatedBooks(); track book.id) {
+        <li [id]="book.id">
+          <app-book [bookId]="book.id"></app-book>
+        </li>
+      }
+    </ul>
+  
+    <div class="pagination d-flex justify-content-center mt-4 mb-4">
+      <button class="btn btn-primary me-2" (click)="prevPage()" [disabled]="currentPage() === 0"><</button>
+      <span class="align-self-center mx-3">{{ currentPage() + 1 }} of {{ totalPages() }}</span>
+      <button class="btn btn-primary ms-2" (click)="nextPage()" [disabled]="currentPage() === totalPages() - 1">></button>
+    </div>
+  </div>

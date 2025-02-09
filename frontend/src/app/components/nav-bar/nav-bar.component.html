@@ -1,26 +1,40 @@
-<nav class="navbar">
-  <ul>
-    @if (!isLoggedIn) {
-      <li>
-        <a routerLink="/login">Login</a>
-      </li>
-      <li>
-        <a routerLink="/register">Register</a>
-      </li>
-    }
-
-    @if (isLoggedIn) {
-      <li>
-        <a routerLink="/user-panel">User</a>
-      </li>
-      @if (isAdmin) {
-        <li>
-          <a routerLink="/admin-panel">Admin Panel</a>
-        </li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="navbar-brand">
+      <span class="navbar-brand text-dark fs-3 fw-bold">
+        @if (isLoggedIn) {
+          Hello, {{getFirstName()}}
+        } @else {
+          Library
+        }
+      </span>
+    </div>    
+    <div class="d-flex gap-4 align-items-center">
+      <div class="nav-item">
+        <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+      </div>
+      @if (!isLoggedIn) {
+        <div class="nav-item">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+        </div>
       }
-      <li>
-        <button (click)="logout()">Logout</button>
-      </li>
-    }
-  </ul>
+  
+      @if (isLoggedIn) {
+        <div class="nav-item">
+          <a class="nav-link" routerLink="/user-panel" routerLinkActive="active">User</a>
+        </div>
+        @if (isAdmin) {
+          <div class="nav-item">
+            <a class="nav-link" routerLink="/admin-panel" routerLinkActive="active">Admin Panel</a>
+          </div>
+        }
+        <div class="nav-item">
+          <button class="btn btn-outline-danger" routerLink="/home" (click)="logout()">Logout</button>
+        </div>
+      }
+    </div>
+  </div>
 </nav>

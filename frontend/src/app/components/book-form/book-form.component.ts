@@ -9,6 +9,7 @@ import { PublisherService } from '../../services/publisher.service';
 import { BookService } from '../../services/book.service';
 import { CommonModule } from '@angular/common';
 import { pastDateValidator } from '../../validators/pastDateValidator';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-book-form',
@@ -29,7 +30,7 @@ export class BookFormComponent implements OnInit {
     private route: ActivatedRoute,
     private authorService: AuthorService,
     private publisherService: PublisherService,
-    private bookService: BookService
+    private bookService: BookService,
   ) {}
 
   protected bookForm: FormGroup = new FormGroup({
