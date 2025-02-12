@@ -1,0 +1,65 @@
+@if (book) {
+<div>
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 class="card-title mb-3">{{ book.title }}</h3>
+            <div class="mb-2"><strong>ISBN:</strong> {{ book.isbn }}</div>
+            <div class="mb-2">
+              <strong>Publisher:</strong> {{ book.publisherName }}
+            </div>
+            <div class="mb-2">
+              <strong>Quantity:</strong> {{ book.quantity }}
+            </div>
+            <div class="mb-2">
+              <strong>Published Date:</strong> {{ book.publishedDate }}
+            </div>
+
+            <div class="mb-3">
+              <strong>Authors:</strong>
+              <ul class="list-group list-group-flush">
+                @for (author of authors; track $index) {
+                <li class="list-group-item p-1" [id]="author.id">
+                  {{ author.name }} {{ author.surname }}
+                </li>
+                }
+              </ul>
+            </div>
+
+            <div class="mb-3">
+              <strong>Page Count:</strong> {{ book.bookDetails.pageCount }}
+            </div>
+            <div class="mb-3">
+              <strong>Description:</strong>
+              <p>{{ book.bookDetails.description }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Cover Type:</strong>
+              {{ getCoverType(book.bookDetails.coverType) | titlecase }}
+            </div>
+            <div class="mb-3">
+              <strong>Age Group:</strong>
+              {{ getAgeGroup(book.bookDetails.ageGroup) | titlecase }}
+            </div>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <img
+              [src]="book.imageUrl"
+              alt="{{ book.title }}"
+              class="img-fluid rounded"
+              style="max-width: 100%; height: auto"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="text-center">
+  <p class="mt-2 text-muted">Loading book details...</p>
+</div>
+}

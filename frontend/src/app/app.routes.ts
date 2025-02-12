@@ -9,30 +9,29 @@ import { canActivateUserGuard } from './guards/can-activate-user.guard';
 import { BookDetailsComponent } from './pages/book-details/book-details.component';
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent},
-    {
-        path: 'user-panel',
-        component: UserPanelComponent,
-        canActivate: [canActivateUserGuard]
-    },
-    { 
-        path: 'admin-panel',
-        component: AdminPanelComponent,
-        canActivate: [canActivateAdminGuard]
-    },
-    {
-        path: 'books/:id',
-        component: BookDetailsComponent,
-        canActivate: [canActivateAdminGuard]
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'register',
-        component: RegisterComponent
-    },
-    { path: '**', redirectTo: '/home' } 
+  { path: 'home', component: HomeComponent },
+  {
+    path: 'user-panel',
+    component: UserPanelComponent,
+    canActivate: [canActivateUserGuard],
+  },
+  {
+    path: 'admin-panel',
+    component: AdminPanelComponent,
+    canActivate: [canActivateAdminGuard],
+  },
+  {
+    path: 'books/:id',
+    component: BookDetailsComponent,
+    canActivate: [canActivateAdminGuard],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  { path: '**', redirectTo: '/home' },
 ];
-  

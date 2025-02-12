@@ -1,16 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, Validators, FormControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { NavBarComponent } from "../../components/nav-bar/nav-bar.component";
+import { NavBarComponent } from '../../components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NavBarComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -19,7 +24,10 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
     });
   }
 
@@ -30,7 +38,13 @@ export class LoginComponent {
     this.authService.login(email!, password!).subscribe({
       next: () => {
         const role = this.authService.getUserRole();
-        this.router.navigate([role === 'ADMIN' ? '/admin-panel' : role === 'USER' ? '/user-panel' : '/home']);
+        this.router.navigate([
+          role === 'ADMIN'
+            ? '/admin-panel'
+            : role === 'USER'
+            ? '/user-panel'
+            : '/home',
+        ]);
       },
       error: () => {
         this.errorMessage = 'Invalid email or password';

@@ -1,21 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ModalComponent],
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+  styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent implements OnInit {
   public isEditMode: boolean = false;
   private userId?: string | null;
+  public showModal: boolean = false;
 
   public constructor(
     private router: Router,
@@ -25,14 +32,20 @@ export class UserFormComponent implements OnInit {
 
   protected userForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^\d{9}$/)])
+    phoneNumber: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\d{9}$/),
+    ]),
   });
 
   ngOnInit(): void {
-    this.userId = localStorage.getItem('userId'); 
+    this.userId = localStorage.getItem('userId');
     if (this.userId) {
       this.isEditMode = true;
       this.loadUserData();
@@ -41,7 +54,7 @@ export class UserFormComponent implements OnInit {
 
   private loadUserData(): void {
     if (!this.userId) return;
-  
+
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
         this.userForm.patchValue({
@@ -49,11 +62,25 @@ export class UserFormComponent implements OnInit {
           password: '',
           firstName: user.firstName,
           lastName: user.lastName,
-          phoneNumber: user.phoneNumber
+          phoneNumber: user.phoneNumber,
         });
       },
       error: (err) => console.error('Failed to load user', err),
     });
+  }
+  public preSubmit(): void {
+    if (this.isEditMode) {
+      this.showModal = true;
+    } else {
+      this.onSubmit();
+    }
+  }
+
+  onModalResult(result: boolean) {
+    if (result) {
+      this.onSubmit();
+    }
+    this.showModal = false;
   }
 
   public onSubmit(): void {
@@ -66,7 +93,7 @@ export class UserFormComponent implements OnInit {
       password: this.userForm.value.password!,
       firstName: this.userForm.value.firstName!,
       lastName: this.userForm.value.lastName!,
-      phoneNumber: this.userForm.value.phoneNumber!
+      phoneNumber: this.userForm.value.phoneNumber!,
     };
 
     if (this.isEditMode && this.userId) {
@@ -75,14 +102,14 @@ export class UserFormComponent implements OnInit {
           localStorage.setItem('firstName', this.userForm.value.firstName);
           this.router.navigate(['/home']);
         },
-        error: (err) => console.error('Failed to update user', err)
+        error: (err) => console.error('Failed to update user', err),
       });
     } else {
       this.authService.register(user).subscribe({
         next: () => {
           this.router.navigate(['/home']);
         },
-        error: (err) => console.error('Failed to register user', err)
+        error: (err) => console.error('Failed to register user', err),
       });
     }
   }

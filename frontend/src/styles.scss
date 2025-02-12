@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+$thirdary-color: #136f63;
+.bg-thirdary {
+  background-color: $thirdary-color;
+}
+
+.v-height {
+  height: 100vh;
+}
+
+.error {
+  font-size: small;
+  color: rgb(230, 52, 52);
+}

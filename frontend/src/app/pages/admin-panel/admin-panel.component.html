@@ -1,6 +1,14 @@
-<app-nav-bar/>
-<button class="btn btn-primary m-3" (click)="toggleShowAddBookForm()">{{showAddBookForm ? "Hide": "Add book" }}</button>
-@if (showAddBookForm) {
-    <app-book-form/>
-}
-<app-book-table/>
+<div class="v-height">
+  <app-nav-bar />
+  <app-book-filter-panel />
+  <button
+    class="btn btn-outline-primary ms-5"
+    (click)="toggleShowAddBookForm()"
+  >
+    {{ showAddBookForm ? "Hide" : "Add book" }}
+  </button>
+  @if (showAddBookForm) {
+  <app-book-form />
+  }
+  <app-book-table />
+</div>

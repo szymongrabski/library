@@ -1,0 +1,59 @@
+<div
+  class="d-flex mb-4 p-3 gap-5 align-items-center bg-light justify-content-center"
+>
+  <div class="d-flex flex-column me-3">
+    <span class="small">Search by title:</span>
+    <input
+      type="text"
+      id="searchTitle"
+      class="form-control"
+      [(ngModel)]="searchTitle"
+      (input)="onFilterChange()"
+    />
+  </div>
+
+  <div class="d-flex flex-column me-3">
+    <span class="small">Age Group:</span>
+    <select
+      class="form-select"
+      [(ngModel)]="ageGroup"
+      (change)="onFilterChange()"
+      id="ageGroup"
+    >
+      @for (group of ageGroups; track $index) {
+      <option [value]="group">{{ group | titlecase }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="d-flex flex-column">
+    <span class="small">Cover Type:</span>
+    <select
+      class="form-select"
+      [(ngModel)]="coverType"
+      (change)="onFilterChange()"
+      id="coverType"
+    >
+      @for (type of coverTypes; track $index) {
+      <option [value]="type">{{ type | titlecase }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="form-check d-flex align-items-center">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="isAvailable"
+      [(ngModel)]="isAvailable"
+      (change)="onFilterChange()"
+    />
+    <span class="form-check-label ms-2"> Available Only </span>
+  </div>
+
+  <div>
+    <button class="btn btn-secondary ms-2 mb-2" (click)="clearFilters()">
+      Clear Filters
+    </button>
+  </div>
+</div>

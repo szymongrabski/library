@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss']
+  styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {} 
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isAuthenticated();
@@ -28,6 +28,6 @@ export class NavBarComponent implements OnInit {
 
   getFirstName(): string {
     const name = this.authService.getFirstName();
-    return  name ? name : "Unknown";
+    return name ? name : 'Unknown';
   }
 }

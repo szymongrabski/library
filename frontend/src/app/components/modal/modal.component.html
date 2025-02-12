@@ -1,0 +1,24 @@
+<div
+  class="d-flex justify-content-center align-items-center position-fixed top-0 left-0 right-0 bottom-0 bg-dark bg-opacity-50 w-100 h-100"
+  style="z-index: 1"
+  (click)="onCancel()"
+>
+  <div class="bg-white rounded p-4 w-50" (click)="onCancel()">
+    <div class="d-flex justify-content-between">
+      <h5>Confirmation</h5>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="onCancel()"
+      ></button>
+    </div>
+    <div>
+      <p>{{ message }}</p>
+    </div>
+    <div class="d-flex justify-content-end p-2 gap-2">
+      <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button class="btn btn-primary" (click)="onAccept()">Accept</button>
+    </div>
+  </div>
+</div>

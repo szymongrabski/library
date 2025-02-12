@@ -10,14 +10,16 @@ import { RentalService } from '../../services/rental.service';
   standalone: true,
   imports: [],
   templateUrl: './book.component.html',
-  styleUrl: './book.component.scss'
+  styleUrl: './book.component.scss',
 })
 export class BookComponent implements OnInit {
-  @Input() bookId: number | undefined; 
+  @Input() bookId: number | undefined;
   public book: Book | null = null;
   public authors: Author[] = [];
   public isLoggedIn: boolean = false;
   public hasUserRentedBook: boolean = false;
+  public showModal: boolean = false;
+  public message: string = 'Are you sure you want to rent this book?';
 
   constructor(
     private bookService: BookService,
@@ -45,11 +47,10 @@ export class BookComponent implements OnInit {
         },
         error: (err) => {
           console.error('Failed to load book data:', err);
-        }
+        },
       });
     }
   }
-
 
   private loadAuthors(authorIds: number[]): void {
     this.authors = this.authorService.getAuthorsByIds(authorIds);
@@ -61,21 +62,23 @@ export class BookComponent implements OnInit {
         next: (response) => {
           this.hasUserRentedBook = true;
           this.bookService.loadAllBooks();
-        }
+        },
       });
     }
   }
 
   private checkIfUserHasRentedBook(): void {
-    const userId = this.authSerivce.getUserId(); 
+    const userId = this.authSerivce.getUserId();
     if (userId && this.bookId) {
       this.rentalService.getRentalsByUserId(userId).subscribe({
         next: (rentals) => {
-          this.hasUserRentedBook = rentals.some(rental => rental.bookId == this.bookId);
+          this.hasUserRentedBook = rentals.some(
+            (rental) => rental.bookId == this.bookId
+          );
         },
         error: (err) => {
           console.error('Failed to check if user has rented the book:', err);
-        }
+        },
       });
     }
   }

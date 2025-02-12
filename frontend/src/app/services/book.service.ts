@@ -3,6 +3,8 @@ import { environment } from '../../environments/environgment';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../models/book.model';
 import { Observable } from 'rxjs';
+import { AgeGroup } from '../models/age-group.model';
+import { CoverType } from '../models/cover-type.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +12,56 @@ import { Observable } from 'rxjs';
 export class BookService {
   private apiUrl = `${environment.apiUrl}/books`;
   private allBooks = signal<Book[]>([]); 
+  private books = signal<Book[]>([]); 
   private page = signal<number>(0);
-  private size = signal<number>(10);
+  private size: number = 9;
 
   constructor(private http: HttpClient) {
     this.loadAllBooks(); 
   }
 
+  filterBooks(
+    searchTitle: string, 
+    isAvailable: boolean, 
+    ageGroup: AgeGroup | null, 
+    coverType: CoverType | null, 
+  ): void {
+    let filtered = this.allBooks();
+
+    if (searchTitle) {
+      filtered = filtered.filter(book => 
+        book.title.toLowerCase().includes(searchTitle.toLowerCase())
+      );
+    }
+
+    if (isAvailable) {
+      filtered = filtered.filter(book => book.quantity > 0);
+    }
+
+    if (ageGroup) {
+      filtered = filtered.filter(book => book.bookDetails.ageGroup === ageGroup);
+    }
+
+    if (coverType) {
+      filtered = filtered.filter(book => book.bookDetails.coverType === coverType);
+    }
+
+    this.books.set(filtered);
+  }
+
+
   loadAllBooks(): void {
     this.http.get<Book[]>(`${this.apiUrl}/all`).subscribe(data => {
       this.allBooks.set(data);
+      this.books.set(data);
     });
   }
 
+  clearFilters(): void {
+    this.books.set(this.allBooks());
+  }
   sortByTitle(direction: "asc" | "desc"): void {
-    const sortedBooks = [...this.allBooks()];
+    const sortedBooks = [...this.books()];
     sortedBooks.sort((a, b) => {
       if (direction === "asc") {
         return a.title.localeCompare(b.title);
@@ -33,11 +70,11 @@ export class BookService {
       }
     });
 
-    this.allBooks.set(sortedBooks); 
+    this.books.set(sortedBooks); 
   }
 
   sortByAmount(direction: "asc" | "desc"): void {
-    const sortedBooks = [...this.allBooks()];
+    const sortedBooks = [...this.books()];
     sortedBooks.sort((a, b) => {
       if (direction === "asc") {
         return a.quantity - b.quantity;
@@ -45,11 +82,11 @@ export class BookService {
         return b.quantity - a.quantity;
       }
     });
-    this.allBooks.set(sortedBooks);
+    this.books.set(sortedBooks);
   }
 
   sortById(direction: "asc" | "desc"): void {
-    const sortedBooks = [...this.allBooks()];
+    const sortedBooks = [...this.books()];
     sortedBooks.sort((a, b) => {
       if (direction === "asc") {
         return a.id - b.id;
@@ -57,11 +94,11 @@ export class BookService {
         return b.id - a.id;
       }
     });
-    this.allBooks.set(sortedBooks);
+    this.books.set(sortedBooks);
   }
 
   sortByPublishedDate(direction: "asc" | "desc"): void {
-    const sortedBooks = [...this.allBooks()];
+    const sortedBooks = [...this.books()];
     sortedBooks.sort((a, b) => {
       const dateA = new Date(a.publishedDate);
       const dateB = new Date(b.publishedDate);
@@ -71,16 +108,16 @@ export class BookService {
         return dateB.getTime() - dateA.getTime();
       }
     });
-    this.allBooks.set(sortedBooks);
+    this.books.set(sortedBooks);
   }
 
   paginatedBooks(): Book[] {
-    const start = this.page() * this.size();
-    return this.allBooks().slice(start, start + this.size());
+    const start = this.page() * this.size;
+    return this.books().slice(start, start + this.size);
   }
 
   totalPages(): number {
-    return Math.ceil(this.allBooks().length / this.size());
+    return Math.ceil(this.books().length / this.size);
   }
 
   currentPage(): number {
