@@ -18,15 +18,15 @@ import { BookService } from '../../services/book.service';
   styleUrl: './admin-panel.component.scss',
 })
 export class AdminPanelComponent implements OnDestroy {
-  showAddBookForm: boolean = false;
+  protected showAddBookForm: boolean = false;
 
-  constructor(private bookService: BookService) {}
+  public constructor(private bookService: BookService) {}
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.bookService.clearFilters();
   }
 
-  toggleShowAddBookForm() {
+  protected toggleShowAddBookForm(): void {
     this.showAddBookForm = !this.showAddBookForm;
   }
 }

@@ -10,9 +10,9 @@ import { UserFormComponent } from '../../components/user-form/user-form.componen
   styleUrl: './user-panel.component.scss',
 })
 export class UserPanelComponent {
-  showEditUserForm: boolean = false;
+  protected showEditUserForm: boolean = false;
 
-  toggleShowEditUserForm(): void {
+  protected toggleShowEditUserForm(): void {
     this.showEditUserForm = !this.showEditUserForm;
   }
 }

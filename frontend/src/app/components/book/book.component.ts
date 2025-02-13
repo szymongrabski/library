@@ -13,22 +13,22 @@ import { RentalService } from '../../services/rental.service';
   styleUrl: './book.component.scss',
 })
 export class BookComponent implements OnInit {
-  @Input() bookId: number | undefined;
-  public book: Book | null = null;
-  public authors: Author[] = [];
-  public isLoggedIn: boolean = false;
-  public hasUserRentedBook: boolean = false;
-  public showModal: boolean = false;
+  @Input() public bookId: number | undefined;
+  protected book: Book | null = null;
+  protected authors: Author[] = [];
+  protected isLoggedIn: boolean = false;
+  protected hasUserRentedBook: boolean = false;
+  protected showModal: boolean = false;
   public message: string = 'Are you sure you want to rent this book?';
 
-  constructor(
+  public constructor(
     private bookService: BookService,
     private authorService: AuthorService,
     private authSerivce: AuthService,
     private rentalService: RentalService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isLoggedIn = this.authSerivce.isAuthenticated();
     if (this.bookId) {
       this.loadBookData();
@@ -59,7 +59,7 @@ export class BookComponent implements OnInit {
   public rentBook(): void {
     if (this.bookId) {
       this.rentalService.rentBook(this.bookId).subscribe({
-        next: (response) => {
+        next: (_response) => {
           this.hasUserRentedBook = true;
           this.bookService.loadAllBooks();
         },
@@ -70,7 +70,7 @@ export class BookComponent implements OnInit {
   private checkIfUserHasRentedBook(): void {
     const userId = this.authSerivce.getUserId();
     if (userId && this.bookId) {
-      this.rentalService.getRentalsByUserId(userId).subscribe({
+      this.rentalService.getRentalsByUserId().subscribe({
         next: (rentals) => {
           this.hasUserRentedBook = rentals.some(
             (rental) => rental.bookId == this.bookId

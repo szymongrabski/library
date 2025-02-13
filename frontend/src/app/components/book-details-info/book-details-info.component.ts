@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AgeGroup } from '../../models/age-group.model';
 import { CoverType } from '../../models/cover-type.model';
 import { BookService } from '../../services/book.service';
@@ -15,20 +15,20 @@ import { CommonModule } from '@angular/common';
   templateUrl: './book-details-info.component.html',
   styleUrl: './book-details-info.component.scss',
 })
-export class BookDetailsInfoComponent {
-  @Input() bookId: number | undefined;
-  public book: Book | null = null;
-  public authors: Author[] = [];
-  public isLoggedIn: boolean = false;
-  public hasUserRentedBook: boolean = false;
+export class BookDetailsInfoComponent implements OnInit {
+  @Input() public bookId: number | undefined;
+  protected book: Book | null = null;
+  protected authors: Author[] = [];
+  protected isLoggedIn: boolean = false;
+  protected hasUserRentedBook: boolean = false;
 
-  constructor(
+  public constructor(
     private bookService: BookService,
     private authorService: AuthorService,
     private authSerivce: AuthService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isLoggedIn = this.authSerivce.isAuthenticated();
     if (this.bookId) {
       this.loadBookData();
@@ -54,11 +54,11 @@ export class BookDetailsInfoComponent {
     this.authors = this.authorService.getAuthorsByIds(authorIds);
   }
 
-  getAgeGroup(ageGroup: AgeGroup): string {
-    return ageGroup ? ageGroup.toString() : 'Unknown';
+  protected getAgeGroup(ageGroup: AgeGroup): string {
+    return ageGroup.toString();
   }
 
-  getCoverType(coverType: CoverType): string {
-    return coverType ? coverType.toString() : 'Unknown';
+  protected getCoverType(coverType: CoverType): string {
+    return coverType.toString();
   }
 }

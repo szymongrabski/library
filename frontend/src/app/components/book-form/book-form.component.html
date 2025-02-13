@@ -142,8 +142,8 @@
       <label for="authors" class="form-label">Available Authors</label>
       <select
         id="authors"
-        (change)="onAuthorSelect($event)"
         class="form-select"
+        (change)="onAuthorSelect($event)"
       >
         @for (author of authors; track author.id) {
         <option [value]="author.id">
@@ -189,5 +189,6 @@
 </div>
 
 @if (showModal) {
-<app-modal [message]="message" (result)="onModalResult($event)"> </app-modal>
+<app-modal [message]="message" (userResponse)="onModalResult($event)">
+</app-modal>
 }

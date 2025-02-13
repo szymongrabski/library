@@ -109,7 +109,7 @@
 @if (showModal) {
 <app-modal
   [message]="'Are you sure you want to save changes?'"
-  (result)="onModalResult($event)"
+  (userResponse)="onModalResult($event)"
 >
 </app-modal>
 }

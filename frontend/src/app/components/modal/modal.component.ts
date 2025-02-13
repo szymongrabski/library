@@ -8,14 +8,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './modal.component.scss',
 })
 export class ModalComponent {
-  @Input() message: string = '';
-  @Output() result: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() public message: string = '';
+  @Output() public userResponse: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 
-  onAccept() {
-    this.result.emit(true);
+  public onAccept(): void {
+    this.userResponse.emit(true);
   }
 
-  onCancel() {
-    this.result.emit(false);
+  public onCancel(): void {
+    this.userResponse.emit(false);
   }
 }

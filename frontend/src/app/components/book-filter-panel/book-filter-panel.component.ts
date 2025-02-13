@@ -13,17 +13,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './book-filter-panel.component.scss',
 })
 export class BookFilterPanelComponent {
-  searchTitle: string = '';
-  isAvailable: boolean = false;
-  ageGroup: AgeGroup | null = null;
-  coverType: CoverType | null = null;
+  protected searchTitle: string = '';
+  protected isAvailable: boolean = false;
+  protected ageGroup: AgeGroup | null = null;
+  protected coverType: CoverType | null = null;
 
-  ageGroups = Object.values(AgeGroup);
-  coverTypes = Object.values(CoverType);
+  protected ageGroups = Object.values(AgeGroup);
+  protected coverTypes = Object.values(CoverType);
 
-  constructor(private bookService: BookService) {}
+  public constructor(private bookService: BookService) {}
 
-  onFilterChange(): void {
+  protected onFilterChange(): void {
     this.bookService.filterBooks(
       this.searchTitle,
       this.isAvailable,
@@ -32,7 +32,7 @@ export class BookFilterPanelComponent {
     );
   }
 
-  clearFilters(): void {
+  protected clearFilters(): void {
     this.searchTitle = '';
     this.isAvailable = false;
     this.ageGroup = null;

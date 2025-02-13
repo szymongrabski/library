@@ -1,4 +1,5 @@
 <div class="container mt-4">
+  @if (paginatedBooks().length > 0) {
   <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-4">
     @for (book of paginatedBooks(); track book.id) {
     <div class="col">
@@ -13,7 +14,7 @@
       (click)="prevPage()"
       [disabled]="currentPage() === 0"
     >
-      <
+      <i class="bi bi-chevron-left"></i>
     </button>
     <span class="align-self-center mx-3"
       >{{ currentPage() + 1 }} of {{ totalPages() }}</span
@@ -23,7 +24,10 @@
       (click)="nextPage()"
       [disabled]="currentPage() === totalPages() - 1"
     >
-      >
+      <i class="bi bi-chevron-right"></i>
     </button>
   </div>
+  } @else {
+  <p class="text-muted text-center">No available books.</p>
+  }
 </div>

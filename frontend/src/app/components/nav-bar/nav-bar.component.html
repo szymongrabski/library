@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div>
       <span class="fs-2 fw-bold">
-        @if (isLoggedIn) { Hello, {{ getFirstName() }}
+        @if (getIsLoggedIn()) { Hello, {{ getFirstName() }}
         } @else { Library }
       </span>
     </div>
@@ -12,7 +12,7 @@
           >Home</a
         >
       </div>
-      @if (!isLoggedIn) {
+      @if (!getIsLoggedIn()) {
       <div class="nav-item">
         <a class="nav-link" routerLink="/login" routerLinkActive="active"
           >Login</a
@@ -23,13 +23,13 @@
           >Register</a
         >
       </div>
-      } @if (isLoggedIn) {
+      } @if (getIsLoggedIn()) {
       <div class="nav-item">
         <a class="nav-link" routerLink="/user-panel" routerLinkActive="active"
           >User</a
         >
       </div>
-      @if (isAdmin) {
+      @if (getIsLoggedIn() && getIsAdmin()) {
       <div class="nav-item">
         <a class="nav-link" routerLink="/admin-panel" routerLinkActive="active"
           >Admin Panel</a

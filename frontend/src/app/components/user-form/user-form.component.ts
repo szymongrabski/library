@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { ModalComponent } from '../modal/modal.component';
+import { UserForm } from '../../models/user-form.model';
 
 @Component({
   selector: 'app-user-form',
@@ -20,9 +21,9 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent implements OnInit {
-  public isEditMode: boolean = false;
+  protected isEditMode: boolean = false;
   private userId?: string | null;
-  public showModal: boolean = false;
+  protected showModal: boolean = false;
 
   public constructor(
     private router: Router,
@@ -30,21 +31,24 @@ export class UserFormComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  protected userForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
+  protected userForm: FormGroup<UserForm> = new FormGroup<UserForm>({
+    email: new FormControl<string | null>('', [
+      Validators.required,
+      Validators.email,
+    ]),
+    password: new FormControl<string | null>('', [
       Validators.required,
       Validators.minLength(6),
     ]),
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    phoneNumber: new FormControl('', [
+    firstName: new FormControl<string | null>('', Validators.required),
+    lastName: new FormControl<string | null>('', Validators.required),
+    phoneNumber: new FormControl<string | null>('', [
       Validators.required,
       Validators.pattern(/^\d{9}$/),
     ]),
   });
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.userId = localStorage.getItem('userId');
     if (this.userId) {
       this.isEditMode = true;
@@ -68,7 +72,8 @@ export class UserFormComponent implements OnInit {
       error: (err) => console.error('Failed to load user', err),
     });
   }
-  public preSubmit(): void {
+
+  protected preSubmit(): void {
     if (this.isEditMode) {
       this.showModal = true;
     } else {
@@ -76,14 +81,14 @@ export class UserFormComponent implements OnInit {
     }
   }
 
-  onModalResult(result: boolean) {
+  protected onModalResult(result: boolean): void {
     if (result) {
       this.onSubmit();
     }
     this.showModal = false;
   }
 
-  public onSubmit(): void {
+  protected onSubmit(): void {
     if (this.userForm.invalid) {
       return;
     }
@@ -99,7 +104,9 @@ export class UserFormComponent implements OnInit {
     if (this.isEditMode && this.userId) {
       this.userService.updateUser(user).subscribe({
         next: () => {
-          localStorage.setItem('firstName', this.userForm.value.firstName);
+          if (this.userForm.value.firstName) {
+            localStorage.setItem('firstName', this.userForm.value.firstName);
+          }
           this.router.navigate(['/home']);
         },
         error: (err) => console.error('Failed to update user', err),
@@ -114,7 +121,7 @@ export class UserFormComponent implements OnInit {
     }
   }
 
-  public resetForm(): void {
+  protected resetForm(): void {
     this.userForm.reset();
   }
 }

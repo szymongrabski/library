@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const canActivateUserGuard: CanActivateFn = (route, state) => {
+export const canActivateUserGuard: CanActivateFn = () => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
@@ -10,7 +10,7 @@ export const canActivateUserGuard: CanActivateFn = (route, state) => {
 
   if (role === 'USER' || role === 'ADMIN') {
     return true;
-  } else {
-    return router.createUrlTree(['/home']);
   }
+
+  return router.createUrlTree(['/home']);
 };

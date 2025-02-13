@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavBarComponent } from '../../components/nav-bar/nav-bar.component';
 import { BookListComponent } from '../../components/book-list/book-list.component';
 import { BookFilterPanelComponent } from '../../components/book-filter-panel/book-filter-panel.component';
@@ -11,10 +11,10 @@ import { BookService } from '../../services/book.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
-  constructor(private bookService: BookService) {}
+export class HomeComponent implements OnDestroy {
+  public constructor(private bookService: BookService) {}
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.bookService.clearFilters();
   }
 }

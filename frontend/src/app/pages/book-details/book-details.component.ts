@@ -19,39 +19,41 @@ import { ModalComponent } from '../../components/modal/modal.component';
   styleUrl: './book-details.component.scss',
 })
 export class BookDetailsComponent implements OnInit {
-  bookId!: number;
-  showEditForm: boolean = false;
-  showModal: boolean = false;
+  protected bookId!: number;
+  protected showEditForm: boolean = false;
+  protected showModal: boolean = false;
 
-  constructor(
+  public constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
-  preHandleDelete(): void {
+  protected preHandleDelete(): void {
     this.showModal = true;
   }
 
-  onModalResult(result: boolean) {
+  protected onModalResult(result: boolean): void {
     if (result) {
       this.handleDelete();
     }
     this.showModal = false;
   }
 
-  handleDelete(): void {
+  protected handleDelete(): void {
     this.bookService.deleteBook(this.bookId);
     this.router.navigate(['/admin-panel']);
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((res) => {
-      this.bookId = res['id'];
+  public ngOnInit(): void {
+    this.route.params.subscribe((res: { id?: string }) => {
+      if (res.id) {
+        this.bookId = +res.id;
+      }
     });
   }
 
-  toggleShowEditForm(): void {
+  protected toggleShowEditForm(): void {
     this.showEditForm = !this.showEditForm;
   }
 }

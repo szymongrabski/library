@@ -14,9 +14,10 @@ import { PublisherService } from '../../services/publisher.service';
 import { BookService } from '../../services/book.service';
 import { CommonModule } from '@angular/common';
 import { pastDateValidator } from '../../validators/pastDateValidator';
-import { CoverType } from '../../models/cover-type.model';
-import { AgeGroup } from '../../models/age-group.model';
 import { ModalComponent } from '../modal/modal.component';
+import { AgeGroup } from '../../models/age-group.model';
+import { CoverType } from '../../models/cover-type.model';
+import { BookForm } from '../../models/book.form.model';
 
 @Component({
   selector: 'app-book-form',
@@ -26,15 +27,15 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrl: './book-form.component.scss',
 })
 export class BookFormComponent implements OnInit {
-  public isEditMode: boolean = false;
+  protected isEditMode: boolean = false;
   private bookId?: number;
-  public authors: Author[] = [];
-  public publishers: Publisher[] = [];
-  public selectedAuthors: Author[] = [];
-  public ageGroups = Object.values(AgeGroup);
-  public coverTypes = Object.values(CoverType);
-  public showModal: boolean = false;
-  public message: string = 'Are you sure you want to add this book?';
+  protected authors: Author[] = [];
+  protected publishers: Publisher[] = [];
+  protected selectedAuthors: Author[] = [];
+  protected ageGroups = Object.values(AgeGroup);
+  protected coverTypes = Object.values(CoverType);
+  protected showModal: boolean = false;
+  protected message: string = 'Are you sure you want to add this book?';
 
   public constructor(
     private router: Router,
@@ -44,30 +45,32 @@ export class BookFormComponent implements OnInit {
     private bookService: BookService
   ) {}
 
-  protected bookForm: FormGroup = new FormGroup({
-    isbn: new FormControl('', Validators.required),
-    title: new FormControl('', Validators.required),
-    quantity: new FormControl(null, [Validators.required, Validators.min(1)]),
-    publisher: new FormControl('', Validators.required),
-    authors: new FormControl([], Validators.required),
-    imageUrl: new FormControl('', Validators.required),
-    publishedDate: new FormControl('', [
+  protected bookForm: FormGroup<BookForm> = new FormGroup<BookForm>({
+    isbn: new FormControl<string | null>('', Validators.required),
+    title: new FormControl<string | null>('', Validators.required),
+    quantity: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(1),
+    ]),
+    publisher: new FormControl<string | null>('', Validators.required),
+    authors: new FormControl<number[] | null>([], Validators.required),
+    imageUrl: new FormControl<string | null>('', Validators.required),
+    publishedDate: new FormControl<string | null>('', [
       Validators.required,
       pastDateValidator(),
     ]),
-
     bookDetails: new FormGroup({
-      pageCount: new FormControl(null, [
+      pageCount: new FormControl<number | null>(null, [
         Validators.required,
         Validators.min(1),
       ]),
-      description: new FormControl(''),
-      coverType: new FormControl('', Validators.required),
-      ageGroup: new FormControl('', Validators.required),
+      description: new FormControl<string | null>(''),
+      coverType: new FormControl<CoverType | null>(null, Validators.required),
+      ageGroup: new FormControl<AgeGroup | null>(null, Validators.required),
     }),
   });
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadAuthorsAndPublishers();
     this.route.params.subscribe((params) => {
       if (params['id']) {
@@ -116,9 +119,12 @@ export class BookFormComponent implements OnInit {
     });
   }
 
-  public onAuthorSelect(event: any): void {
-    const selectedAuthorId = event.target.value;
-    const author = this.authors.find((a) => a.id === +selectedAuthorId);
+  protected onAuthorSelect(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+
+    const selectedAuthorId = Number(target.value);
+    const author = this.authors.find((a) => a.id === selectedAuthorId);
+
     if (author && !this.selectedAuthors.includes(author)) {
       this.selectedAuthors.push(author);
       this.bookForm
@@ -127,7 +133,7 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-  public removeAuthor(authorId: number): void {
+  protected removeAuthor(authorId: number): void {
     this.selectedAuthors = this.selectedAuthors.filter(
       (author) => author.id !== authorId
     );
@@ -136,23 +142,23 @@ export class BookFormComponent implements OnInit {
       ?.setValue(this.selectedAuthors.map((author) => author.id));
   }
 
-  public resetForm(): void {
+  protected resetForm(): void {
     this.bookForm.reset();
     this.selectedAuthors = [];
   }
 
-  public preSubmit(): void {
+  protected preSubmit(): void {
     this.showModal = true;
   }
 
-  onModalResult(result: boolean) {
+  protected onModalResult(result: boolean): void {
     if (result) {
       this.onSubmit();
     }
     this.showModal = false;
   }
 
-  public onSubmit(): void {
+  protected onSubmit(): void {
     if (this.bookForm.invalid) {
       return;
     }
@@ -164,15 +170,15 @@ export class BookFormComponent implements OnInit {
       isbn: this.bookForm.value.isbn!,
       title: this.bookForm.value.title!,
       quantity: this.bookForm.value.quantity!,
-      publisherName: this.bookForm.value.publisher,
+      publisherName: this.bookForm.value.publisher!,
       authors: this.selectedAuthors.map((author) => author.id),
-      imageUrl: this.bookForm.value.imageUrl,
-      publishedDate: this.bookForm.value.publishedDate,
+      imageUrl: this.bookForm.value.imageUrl!,
+      publishedDate: this.bookForm.value.publishedDate!,
       bookDetails: {
-        pageCount: bookDetails.pageCount,
-        description: bookDetails.description,
-        coverType: bookDetails.coverType,
-        ageGroup: bookDetails.ageGroup,
+        pageCount: bookDetails!.pageCount!,
+        description: bookDetails!.description!,
+        coverType: bookDetails!.coverType!,
+        ageGroup: bookDetails!.ageGroup!,
       },
     };
 

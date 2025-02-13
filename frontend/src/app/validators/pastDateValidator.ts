@@ -6,8 +6,9 @@ export function pastDateValidator(): ValidatorFn {
     const controlDate = new Date(control.value);
 
     if (controlDate >= currentDate) {
-        return { pastDate: true };
+      return { pastDate: true };
     }
-    return null; 
+
+    return null;
   };
 }

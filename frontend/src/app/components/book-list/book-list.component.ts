@@ -10,17 +10,17 @@ import { BookComponent } from '../book/book.component';
   styleUrl: './book-list.component.scss',
 })
 export class BookListComponent {
-  paginatedBooks = computed(() => this.bookService.paginatedBooks());
-  totalPages = computed(() => this.bookService.totalPages());
-  currentPage = computed(() => this.bookService.currentPage());
+  protected paginatedBooks = computed(() => this.bookService.paginatedBooks());
+  protected totalPages = computed(() => this.bookService.totalPages());
+  protected currentPage = computed(() => this.bookService.currentPage());
 
-  constructor(private bookService: BookService) {}
+  public constructor(private bookService: BookService) {}
 
-  nextPage(): void {
+  protected nextPage(): void {
     this.bookService.nextPage();
   }
 
-  prevPage(): void {
+  protected prevPage(): void {
     this.bookService.prevPage();
   }
 }

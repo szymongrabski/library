@@ -11,23 +11,35 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-  isLoggedIn: boolean = false;
-  isAdmin: boolean = false;
+  private isLoggedIn: boolean = false;
+  private isAdmin: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  public constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isLoggedIn = this.authService.isAuthenticated();
     this.isAdmin = this.authService.getUserRole() === 'ADMIN';
   }
 
-  logout() {
+  protected logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  getFirstName(): string {
+  protected getFirstName(): string {
     const name = this.authService.getFirstName();
+
     return name ? name : 'Unknown';
+  }
+
+  protected getIsLoggedIn(): boolean {
+    return this.isLoggedIn;
+  }
+
+  protected getIsAdmin(): boolean {
+    return this.isAdmin;
   }
 }
