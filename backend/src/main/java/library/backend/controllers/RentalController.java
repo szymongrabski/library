@@ -1,6 +1,7 @@
 package library.backend.controllers;
 
 import library.backend.dtos.RentalDTO;
+import library.backend.entities.CustomUserDetails;
 import library.backend.entities.Rental;
 import library.backend.entities.User;
 import library.backend.entities.UserRole;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,12 @@ public class RentalController {
 
         Rental rental = rentalService.rentBook(bookId, currentUser.getId());
         return ResponseEntity.ok(rentalService.convertToDTO(rental));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<RentalDTO>> getRentalsByUserId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<RentalDTO> rentals = rentalService.getRentalsByUserId(customUserDetails.getId());
+        return ResponseEntity.ok(rentals);
     }
 
     @Secured("ROLE_ADMIN")

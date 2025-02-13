@@ -1,5 +1,6 @@
 package library.backend.config;
 
+import library.backend.entities.CustomUserDetails;
 import library.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,12 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
+                .map(user -> new CustomUserDetails(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPassword(),
+                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+                ))
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
     }
 

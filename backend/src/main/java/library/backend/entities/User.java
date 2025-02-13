@@ -33,6 +33,9 @@ public class User implements UserDetails {
 
     private int credit;
 
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Rental> rentals = new HashSet<>();
 

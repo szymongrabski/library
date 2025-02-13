@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -16,7 +17,10 @@ public class BookDTO {
     private String isbn;
     private String title;
     private int quantity;
-    private String description;
     private String publisherName;
     private Set<Long> authors;
+    private String imageUrl;
+    private LocalDate publishedDate;
+    private BookDetailsDTO bookDetails;
 }
+

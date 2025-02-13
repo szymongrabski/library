@@ -3,6 +3,7 @@ package library.backend.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,6 @@ public class Book {
     private String isbn;
     private String title;
     private int quantity;
-    private String description;
 
     @ManyToMany
     @JoinTable(
@@ -34,4 +34,12 @@ public class Book {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Rental> rentals = new HashSet<>();
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    private LocalDate publishedDate;
+
+    @Embedded
+    private BookDetails bookDetails;
 }

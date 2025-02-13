@@ -13,6 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -32,6 +36,11 @@ public class BookController {
             @RequestParam(defaultValue = "10") int size
     ) {
         return ResponseEntity.ok(bookService.getBooks(page, size));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
+        return ResponseEntity.ok(bookService.getBooks());
     }
 
     @GetMapping("/search")
@@ -75,7 +84,14 @@ public class BookController {
     @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
-        return ResponseEntity.ok(bookService.createBook(bookDTO));
+        BookDTO createdBook = bookService.createBook(bookDTO);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdBook.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdBook);
     }
 
     @Secured("ROLE_ADMIN")

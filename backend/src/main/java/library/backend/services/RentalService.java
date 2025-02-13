@@ -88,6 +88,16 @@ public class RentalService {
                 .collect(Collectors.toList());
     }
 
+    public List<RentalDTO> getRentalsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        List<Rental> rentals = rentalRepository.findByUser(user);
+        return rentals.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public RentalDTO convertToDTO(Rental rental) {
         return RentalDTO.builder()
                 .id(rental.getId())

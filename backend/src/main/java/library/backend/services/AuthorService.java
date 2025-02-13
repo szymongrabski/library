@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,14 @@ public class AuthorService {
                 .map(author -> new AuthorDTO(author.getId(), author.getName(), author.getSurname()))
                 .collect(Collectors.toSet());
     }
+
     public Optional<Author> getAuthorById(Long authorId) {
         return authorRepository.findById(authorId);
+    }
+
+    public Set<AuthorDTO> getAuthorsByIds(List<Long> authorIds) {
+        return authorRepository.findAllById(authorIds).stream()
+                .map(author -> new AuthorDTO(author.getId(), author.getName(), author.getSurname()))
+                .collect(Collectors.toSet());
     }
 }

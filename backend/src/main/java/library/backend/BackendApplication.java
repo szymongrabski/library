@@ -36,6 +36,8 @@ public class BackendApplication {
 						.email("admin@example.com")
 						.password(passwordEncoder.encode("admin123"))
 						.role(UserRole.ADMIN)
+						.firstName("John")
+						.lastName("Doe")
 						.createdAt(LocalDate.now())
 						.credit(0)
 						.build();
@@ -73,13 +75,21 @@ public class BackendApplication {
 					bookAuthors.add(authorArray[authorIndex]);
 					authorIndex = (authorIndex + 1) % authorArray.length;
 
+					BookDetails bookDetails = BookDetails.builder()
+							.ageGroup(AgeGroup.ADULTS)
+							.description("Description for book Book Title " + i + ". Very interesting book.")
+							.coverType(CoverType.SOFT)
+							.pageCount(200 + i * 10).build();
+
 					Book book = Book.builder()
 							.isbn("ISBN-12345-" + i)
 							.title("Book Title " + i)
-							.description("Description for book " + i)
-							.quantity(10)
+							.quantity(i)
+							.bookDetails(bookDetails)
 							.publisher(publisher)
 							.authors(bookAuthors)
+							.imageUrl("https://static.posters.cz/image/1300/harry-potter-deathly-hallows-book-cover-i214933.jpg")
+							.publishedDate(LocalDate.now().minusMonths(i).minusDays(i))
 							.build();
 					bookRepository.save(book);
 				}
