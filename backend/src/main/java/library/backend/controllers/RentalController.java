@@ -28,13 +28,29 @@ public class RentalController {
     private final JwtService jwtService;
 
     @PostMapping("/rent")
-    public ResponseEntity<RentalDTO> rentBook(@RequestParam Long bookId) {
-        User currentUser = jwtService.getCurrentUser();
-        if (currentUser == null) {
-            return ResponseEntity.status(401).body(null);
-        }
+    public ResponseEntity<RentalDTO> rentBook(@RequestParam Long bookId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Rental rental = rentalService.rentBook(bookId, customUserDetails.getId());
+        return ResponseEntity.ok(rentalService.convertToDTO(rental));
+    }
 
-        Rental rental = rentalService.rentBook(bookId, currentUser.getId());
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/approve/{rentalId}")
+    public ResponseEntity<RentalDTO> approveRental(@PathVariable Long rentalId) {
+        Rental rental = rentalService.approveRental(rentalId);
+        return ResponseEntity.ok(rentalService.convertToDTO(rental));
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{rentalId}")
+    public ResponseEntity<Void> deleteRental(@PathVariable Long rentalId) {
+        rentalService.deleteRental(rentalId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/return/{rentalId}")
+    public ResponseEntity<RentalDTO> returnBook(@PathVariable Long rentalId) {
+        Rental rental = rentalService.returnBook(rentalId);
         return ResponseEntity.ok(rentalService.convertToDTO(rental));
     }
 
@@ -45,32 +61,8 @@ public class RentalController {
     }
 
     @Secured("ROLE_ADMIN")
-    @PostMapping("/return/{rentalId}")
-    public ResponseEntity<RentalDTO> returnBook(@PathVariable Long rentalId) {
-        User currentUser = jwtService.getCurrentUser();
-        if (currentUser == null) {
-            return ResponseEntity.status(401).body(null);
-        }
-
-        if (currentUser.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(403).body(null);
-        }
-
-        Rental rental = rentalService.returnBook(rentalId);
-        return ResponseEntity.ok(rentalService.convertToDTO(rental));
-    }
-
     @GetMapping
     public ResponseEntity<List<RentalDTO>> getAllRentals() {
-        User currentUser = jwtService.getCurrentUser();
-        if (currentUser == null) {
-            return ResponseEntity.status(401).body(null);
-        }
-
-        if (currentUser.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(403).body(null);
-        }
-
         List<RentalDTO> rentals = rentalService.getAllRentals();
         return ResponseEntity.ok(rentals);
     }

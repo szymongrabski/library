@@ -47,9 +47,7 @@ public class RentalService {
         Rental rental = Rental.builder()
                 .book(book)
                 .user(user)
-                .rentalDate(LocalDate.now())
-                .returnDate(LocalDate.now().plusWeeks(2))
-                .status(RentalStatus.RENTED)
+                .status(RentalStatus.PENDING)
                 .build();
 
         rentalRepository.save(rental);
@@ -78,6 +76,37 @@ public class RentalService {
         Book book = rental.getBook();
         book.setQuantity(book.getQuantity() + 1);
         bookService.updateBook(book.getId(), bookService.convertToDTO(book));
+        return rental;
+    }
+
+    public void deleteRental(Long rentalId) {
+        Rental rental = rentalRepository.findById(rentalId)
+                .orElseThrow(() -> new RentalNotFoundException(rentalId));
+        rentalRepository.delete(rental);
+    }
+
+    @Transactional
+    public Rental approveRental(Long rentalId) {
+        Rental rental = rentalRepository.findById(rentalId)
+                .orElseThrow(() -> new RentalNotFoundException(rentalId));
+
+        if (rental.getStatus() == RentalStatus.RENTED) {
+            throw new RuntimeException("This rental has already been approved.");
+        }
+
+        if (rental.getStatus() != RentalStatus.PENDING) {
+            throw new RuntimeException("Rental is not pending approval.");
+        }
+
+        rental.setStatus(RentalStatus.RENTED);
+        rental.setRentalDate(LocalDate.now());
+        rental.setReturnDate(LocalDate.now().plusWeeks(2));
+        rentalRepository.save(rental);
+
+        Book book = rental.getBook();
+        book.setQuantity(book.getQuantity() - 1);
+        bookRepository.save(book);
+
         return rental;
     }
 
