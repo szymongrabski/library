@@ -24,6 +24,7 @@ export class UserFormComponent implements OnInit {
   protected isEditMode: boolean = false;
   private userId?: string | null;
   protected showModal: boolean = false;
+  protected errorMessage: string | null = null;
 
   public constructor(
     private router: Router,
@@ -89,6 +90,7 @@ export class UserFormComponent implements OnInit {
   }
 
   protected onSubmit(): void {
+    this.errorMessage = null;
     if (this.userForm.invalid) {
       return;
     }
@@ -109,14 +111,14 @@ export class UserFormComponent implements OnInit {
           }
           this.router.navigate(['/home']);
         },
-        error: (err) => console.error('Failed to update user', err),
+        error: (_err) => (this.errorMessage = 'Failed to update user'),
       });
     } else {
       this.authService.register(user).subscribe({
         next: () => {
           this.router.navigate(['/home']);
         },
-        error: (err) => console.error('Failed to register user', err),
+        error: (_err) => (this.errorMessage = 'Failed to register user'),
       });
     }
   }

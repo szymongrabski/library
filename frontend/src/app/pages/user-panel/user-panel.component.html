@@ -1,7 +1,8 @@
 <app-nav-bar />
-<button class="btn btn-primary m-3" (click)="toggleShowEditUserForm()">
-  {{ showEditUserForm ? "Hide" : "Edit" }}
+<button class="btn btn-outline-primary m-2" (click)="toggleShowEditUserForm()">
+  {{ showEditUserForm ? "Hide" : "Edit User" }}
 </button>
 @if(showEditUserForm) {
 <app-user-form />
 }
+<app-user-rentals />

@@ -1,7 +1,9 @@
 <app-nav-bar />
 <div class="d-flex gap-2 p-3">
-  <button (click)="preHandleDelete()" class="btn btn-danger">Delete</button>
-  <button (click)="toggleShowEditForm()" class="btn btn-primary">
+  <button (click)="preHandleDelete()" class="btn btn-outline-danger">
+    Delete
+  </button>
+  <button (click)="toggleShowEditForm()" class="btn btn-outline-primary">
     {{ showEditForm ? "Hide" : "Edit" }}
   </button>
 </div>

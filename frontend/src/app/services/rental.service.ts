@@ -17,7 +17,7 @@ export class RentalService {
 
   public loadAllRentals(): void {
     this.http.get<Rental[]>(`${this.apiUrl}`).subscribe((data) => {
-      this.allRentals.set(data);
+      this.allRentals.set(data.sort((a, b) => b.id - a.id));
     });
   }
 
@@ -31,6 +31,14 @@ export class RentalService {
 
   public returnBook(rentalId: number): Observable<Rental> {
     return this.http.post<Rental>(`${this.apiUrl}/return/${rentalId}`, {});
+  }
+
+  public approveRental(rentalId: number): Observable<Rental> {
+    return this.http.post<Rental>(`${this.apiUrl}/approve/${rentalId}`, {});
+  }
+
+  public deleteRental(rentalId: number): Observable<Rental> {
+    return this.http.delete<Rental>(`${this.apiUrl}/${rentalId}`, {});
   }
 
   public paginatedRentals(): Rental[] {

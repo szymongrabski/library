@@ -1,0 +1,43 @@
+@if (rental) {
+<div class="card p-3 w-50 m-auto">
+  <h5 class="card-title">Rental Information</h5>
+
+  <p><strong>Book ID:</strong> {{ rental.bookId }}</p>
+  <div class="d-flex gap-2 align-items-center mb-2">
+    <strong>Status:</strong>
+    <span
+      class="badge"
+      [class]="{
+        'bg-warning': isPending(),
+        'bg-thirdary': isRented(),
+        'bg-secondary': isReturned()
+      }"
+    >
+      {{ rental.status }}
+    </span>
+  </div>
+
+  @if (isPending()) {
+  <div class="alert alert-info">
+    <p>This rental is pending approval.</p>
+    <button class="btn btn-primary" (click)="prehandleAction()">Accept</button>
+  </div>
+  } @else if (isRented()) {
+  <div class="alert alert-warning">
+    <p>This book is currently rented out.</p>
+    <p><strong>Rental Date:</strong> {{ rental.rentalDate }}</p>
+    <p><strong>Return Date:</strong> {{ rental.returnDate }}</p>
+    <button class="btn btn-warning" (click)="prehandleAction()">Return</button>
+  </div>
+  } @else if(isReturned()) {
+  <div class="alert alert-success">
+    <p>This rental has been returned.</p>
+    <button class="btn btn-danger" (click)="prehandleAction()">Delete</button>
+  </div>
+  }
+</div>
+} @if (showModal) {
+<div>
+  <app-modal [message]="message" (userResponse)="onModalResult($event)" />
+</div>
+}

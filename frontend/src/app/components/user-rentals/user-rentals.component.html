@@ -1,0 +1,34 @@
+<h2 class="text-center mb-4">Rentals</h2>
+<div class="container">
+  <div class="row">
+    @for (rental of rentals; track $index) {
+    <div class="col-md-4 col-sm-6 col-12 mb-4">
+      <div class="card p-3 shadow-sm border rounded text-center">
+        <div>
+          <div
+            class="badge mb-2"
+            [class]="{
+              'bg-warning': rental.status === 'PENDING',
+              'bg-thirdary': rental.status === 'RENTED',
+              'bg-secondary': rental.status === 'RETURNED'
+            }"
+          >
+            {{ rental.status | titlecase }}
+          </div>
+        </div>
+        <div class="text-muted">
+          @if (rental.rentalDate && rental.returnDate) {
+          <p class="mb-1">
+            From <strong>{{ rental.rentalDate | date }}</strong> to
+            <strong>{{ rental.returnDate | date }}</strong>
+          </p>
+          } @else {
+          <p class="mb-1 invisible">Placeholder</p>
+          }
+        </div>
+        <app-book-general [bookId]="rental.bookId" class="mt-2" />
+      </div>
+    </div>
+    }
+  </div>
+</div>

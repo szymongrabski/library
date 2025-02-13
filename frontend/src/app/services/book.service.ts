@@ -136,9 +136,6 @@ export class BookService {
       next: () => {
         this.loadAllBooks();
       },
-      error: (err) => {
-        console.error('Err while deleting book: ', err);
-      },
     });
   }
 

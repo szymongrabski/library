@@ -73,7 +73,9 @@
         <td>{{ book.quantity }}</td>
         <td>{{ book.publishedDate | date : "d MMMM yyyy" }}</td>
         <td class="text-center">
-          <a class="btn btn-info btn-sm" [routerLink]="['/books', book.id]"
+          <a
+            class="btn btn-sm btn-outline-primary"
+            [routerLink]="['/books', book.id]"
             >See more</a
           >
         </td>

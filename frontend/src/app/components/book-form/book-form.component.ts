@@ -36,6 +36,7 @@ export class BookFormComponent implements OnInit {
   protected coverTypes = Object.values(CoverType);
   protected showModal: boolean = false;
   protected message: string = 'Are you sure you want to add this book?';
+  protected errorMessage: string | null = null;
 
   public constructor(
     private router: Router,
@@ -115,7 +116,10 @@ export class BookFormComponent implements OnInit {
           book.authors.includes(author.id)
         );
       },
-      error: (err) => console.error('Failed to load book', err),
+      error: (_err) => {
+        this.errorMessage =
+          'Failed to load book details. Please try again later.';
+      },
     });
   }
 
@@ -144,6 +148,7 @@ export class BookFormComponent implements OnInit {
 
   protected resetForm(): void {
     this.bookForm.reset();
+    this.errorMessage = null;
     this.selectedAuthors = [];
   }
 
@@ -188,7 +193,9 @@ export class BookFormComponent implements OnInit {
           this.bookService.loadAllBooks();
           this.router.navigate(['/admin-panel']);
         },
-        error: (err) => console.error('Failed to update book', err),
+        error: (_err) =>
+          (this.errorMessage =
+            'Failed to update book. Please try again later.'),
       });
     } else {
       this.bookService.createBook(book).subscribe({
@@ -196,7 +203,8 @@ export class BookFormComponent implements OnInit {
           this.bookService.loadAllBooks();
           this.resetForm();
         },
-        error: (err) => console.error('Failed to add book', err),
+        error: (err) =>
+          (this.errorMessage = 'Failed to add book. Please try again later.'),
       });
     }
   }

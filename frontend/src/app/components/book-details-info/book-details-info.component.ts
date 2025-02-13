@@ -43,9 +43,6 @@ export class BookDetailsInfoComponent implements OnInit {
           console.log(book);
           this.loadAuthors(book.authors);
         },
-        error: (err) => {
-          console.error('Failed to load book data:', err);
-        },
       });
     }
   }

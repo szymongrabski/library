@@ -1,0 +1,32 @@
+@if (book) {
+<div class="container mt-2 h-100">
+  <div>
+    <div class="d-flex flex-column position-relative">
+      <div class="text-center mb-3">
+        <img
+          [src]="book.imageUrl"
+          alt="{{ book.title }}"
+          class="img-fluid rounded w-50"
+        />
+      </div>
+      <div class="d-flex flex-column">
+        <h4 class="card-title">{{ book.title }}</h4>
+
+        <div class="mb-3">
+          <ul class="list-unstyled">
+            @for (author of authors; track author.id) {
+            <li [id]="author.id">{{ author.name }} {{ author.surname }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="mt-4">
+  <div class="text-center">
+    <p class="mt-2 error">Error while downloading book</p>
+  </div>
+</div>
+}

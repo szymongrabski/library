@@ -184,6 +184,12 @@
       >
         Submit
       </button>
+
+      @if (errorMessage) {
+      <div class="error">
+        {{ errorMessage }}
+      </div>
+      }
     </div>
   </form>
 </div>
