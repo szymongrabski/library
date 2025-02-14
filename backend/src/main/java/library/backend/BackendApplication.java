@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Random;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -74,11 +75,16 @@ public class BackendApplication {
 					Set<Author> bookAuthors = new HashSet<>();
 					bookAuthors.add(authorArray[authorIndex]);
 					authorIndex = (authorIndex + 1) % authorArray.length;
+					Random random = new Random();
+					int number = random.nextInt(100);
+
+					CoverType coverType = determineCoverType(number);
+					AgeGroup ageGroup = determineAgeGroup(number);
 
 					BookDetails bookDetails = BookDetails.builder()
-							.ageGroup(AgeGroup.ADULTS)
+							.ageGroup(ageGroup)
 							.description("Description for book Book Title " + i + ". Very interesting book.")
-							.coverType(CoverType.SOFT)
+							.coverType(coverType)
 							.pageCount(200 + i * 10).build();
 
 					Book book = Book.builder()
@@ -97,4 +103,19 @@ public class BackendApplication {
 			}
 		};
 	}
+
+	private CoverType determineCoverType(int number) {
+		return number % 2 == 0 ? CoverType.HARD : CoverType.SOFT;
+	}
+
+	private AgeGroup determineAgeGroup(int number) {
+		if (number < 20) {
+			return AgeGroup.CHILDREN;
+		} else if (number < 40) {
+			return AgeGroup.TEENS;
+		} else {
+			return AgeGroup.ADULTS;
+		}
+	}
+
 }

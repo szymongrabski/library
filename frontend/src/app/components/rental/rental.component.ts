@@ -38,7 +38,7 @@ export class RentalComponent implements OnInit {
     return this.rental?.status === 'RETURNED';
   }
 
-  protected prehandleAction() {
+  protected prehandleAction(): void {
     this.showModal = true;
   }
 

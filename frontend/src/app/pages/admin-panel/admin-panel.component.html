@@ -1,13 +1,29 @@
 <div class="v-height">
   <app-nav-bar />
   <app-book-filter-panel />
-  <div class="d-flex gap-2 p-2">
-    <button class="btn btn-outline-primary" (click)="handleShowRentals()">
-      Browse rentals
-    </button>
-    <button class="btn btn-outline-primary" (click)="toggleShowAddBookForm()">
-      {{ showAddBookForm ? "Hide" : "Add book" }}
-    </button>
+  <div class="d-flex justify-content-between align-items-center m-2">
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary" (click)="handleShowRentals()">
+        Browse rentals
+      </button>
+      <button class="btn btn-outline-primary" (click)="toggleShowAddBookForm()">
+        {{ showAddBookForm ? "Hide" : "Add book" }}
+      </button>
+    </div>
+    <div>
+      <label for="pageSize" class="small text-muted">Page size</label>
+      <select
+        class="form-select form-select-sm"
+        id="pageSize"
+        (change)="onPageSizeChange($event)"
+      >
+        <option value="9">9</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+      </select>
+    </div>
   </div>
   @if (showAddBookForm) {
   <app-book-form />

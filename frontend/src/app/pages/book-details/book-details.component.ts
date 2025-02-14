@@ -45,6 +45,10 @@ export class BookDetailsComponent implements OnInit {
     this.router.navigate(['/admin-panel']);
   }
 
+  protected handleGoBack(): void {
+    this.router.navigate(['/admin-panel']);
+  }
+
   public ngOnInit(): void {
     this.route.params.subscribe((res: { id?: string }) => {
       if (res.id) {

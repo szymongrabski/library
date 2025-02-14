@@ -21,13 +21,19 @@ import { Router } from '@angular/router';
 export class AdminPanelComponent implements OnDestroy {
   protected showAddBookForm: boolean = false;
 
-  public constructor(
-    private bookService: BookService,
-    private router: Router
-  ) {}
+  public constructor(private bookService: BookService, private router: Router) {
+    this.bookService.loadAllBooks();
+  }
 
   public ngOnDestroy(): void {
     this.bookService.clearFilters();
+    this.bookService.setPageSize(9);
+  }
+
+  protected onPageSizeChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const newSize = parseInt(target.value, 10);
+    this.bookService.setPageSize(newSize);
   }
 
   protected handleShowRentals(): void {

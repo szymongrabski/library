@@ -14,7 +14,7 @@ export class BookService {
   private allBooks = signal<Book[]>([]);
   private books = signal<Book[]>([]);
   private page = signal<number>(0);
-  private size: number = 9;
+  private size = signal<number>(9);
 
   private constructor(private http: HttpClient) {
     this.loadAllBooks();
@@ -106,13 +106,13 @@ export class BookService {
   }
 
   public paginatedBooks(): Book[] {
-    const start = this.page() * this.size;
+    const start = this.page() * this.size();
 
-    return this.books().slice(start, start + this.size);
+    return this.books().slice(start, start + this.size());
   }
 
   public totalPages(): number {
-    return Math.ceil(this.books().length / this.size);
+    return Math.ceil(this.books().length / this.size());
   }
 
   public currentPage(): number {
@@ -129,6 +129,11 @@ export class BookService {
     if (this.page() > 0) {
       this.page.update((p) => p - 1);
     }
+  }
+
+  public setPageSize(size: number): void {
+    this.size.set(size);
+    this.page.set(0);
   }
 
   public deleteBook(bookId: number): void {

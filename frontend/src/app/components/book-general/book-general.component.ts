@@ -15,8 +15,6 @@ export class BookGeneralComponent implements OnInit {
   @Input() public bookId: number | undefined;
   protected book: Book | undefined = undefined;
   protected authors: Author[] = [];
-  protected isLoggedIn: boolean = false;
-  protected hasUserRentedBook: boolean = false;
   protected showModal: boolean = false;
 
   public constructor(

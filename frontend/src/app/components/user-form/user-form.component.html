@@ -15,6 +15,7 @@
         formControlName="email"
         type="email"
         class="form-control"
+        autocomplete="email"
       />
       @if (userForm.get('email')?.touched &&
       userForm.get('email')?.errors?.['required']) {

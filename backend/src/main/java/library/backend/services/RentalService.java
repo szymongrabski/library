@@ -104,7 +104,6 @@ public class RentalService {
         rentalRepository.save(rental);
 
         Book book = rental.getBook();
-        book.setQuantity(book.getQuantity() - 1);
         bookRepository.save(book);
 
         return rental;

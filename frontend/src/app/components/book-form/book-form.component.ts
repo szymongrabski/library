@@ -203,7 +203,7 @@ export class BookFormComponent implements OnInit {
           this.bookService.loadAllBooks();
           this.resetForm();
         },
-        error: (err) =>
+        error: (_err) =>
           (this.errorMessage = 'Failed to add book. Please try again later.'),
       });
     }

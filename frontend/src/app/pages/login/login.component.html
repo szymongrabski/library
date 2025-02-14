@@ -8,14 +8,25 @@
   >
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="email" formControlName="email" class="form-control" />
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        class="form-control"
+        autocomplete="email"
+      />
       @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
       <p class="error">Invalid email.</p>
       }
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" formControlName="password" class="form-control" />
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        class="form-control"
+      />
       @if (loginForm.get('password')?.invalid &&
       loginForm.get('password')?.touched) {
       <p class="error">Password must be at least 6 characters long.</p>
